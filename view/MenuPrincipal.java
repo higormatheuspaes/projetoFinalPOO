@@ -35,7 +35,6 @@ public class MenuPrincipal extends JFrame {
         menu.add(btnRegistrarEntrada);
         menu.add(btnRegistrarSaida);
         menu.add(btnListarProdutos);
-        menu.add(btnListarProdutos);
         menu.add(btnListarEntradas);
         menu.add(btnListarSaidas);
         menu.add(btnMovimentacoes);
@@ -49,6 +48,9 @@ public class MenuPrincipal extends JFrame {
         painelPrincipal = new JPanel(cardLayout);
 
         painelPrincipal.add(new ProdutoCadastro(service), "cadastroProduto");
+        painelPrincipal.add(new RegistrarEntrada(service), "entrada");
+        painelPrincipal.add(new RegistrarSaida(service), "saida");
+        painelPrincipal.add(new ListarProdutos(service), "produtos");
         painelPrincipal.add(new ListarEntradas(service), "entradas");
         painelPrincipal.add(new ListarSaidas(service), "saidas");
         painelPrincipal.add(new ListarMovimentacoes(service), "movimentos");
@@ -59,11 +61,15 @@ public class MenuPrincipal extends JFrame {
 
         //Eventos
         btnCadastroProduto.addActionListener(e -> cardLayout.show(painelPrincipal, "cadastroProduto"));
+        btnRegistrarEntrada.addActionListener(e -> cardLayout.show(painelPrincipal, "entrada"));
+        btnRegistrarSaida.addActionListener(e -> cardLayout.show(painelPrincipal, "saida"));
+        btnListarProdutos.addActionListener(e -> cardLayout.show(painelPrincipal, "produtos"));
         btnListarEntradas.addActionListener(e -> cardLayout.show(painelPrincipal, "entradas"));
         btnListarSaidas.addActionListener(e -> cardLayout.show(painelPrincipal, "saidas"));
         btnMovimentacoes.addActionListener(e -> cardLayout.show(painelPrincipal, "movimentos"));
         btnSaldoProduto.addActionListener(e -> cardLayout.show(painelPrincipal, "saldoProduto"));
         btnSaldoPeriodo.addActionListener(e -> cardLayout.show(painelPrincipal, "saldoPeriodo"));
+
     }
 
 }
