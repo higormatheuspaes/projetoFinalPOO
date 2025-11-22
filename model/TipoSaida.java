@@ -4,5 +4,5 @@ public enum TipoSaida {
     vendaCliente,
     usoInterno,
     devolucaoFornecedor,
-    outra
+    Outra
 }

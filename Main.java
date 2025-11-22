@@ -1,12 +1,13 @@
 import view.MenuPrincipal;
 import repository.*;
-import services.*;
+import services.*;   
+import persistence.*; 
 
 public class Main {
     public static void main(String[] args) {
-        iProdutoRepository prodRepo = new ProdutoRepository();
-        iMovimentoRepository movRepo = new MovimentoRepository();
-
+        
+        iProdutoRepository prodRepo = new ProdutoCsvRepository(); 
+        iMovimentoRepository movRepo = new MovimentoCsvRepository(prodRepo);
         iEstoqueService service = new EstoqueService(prodRepo, movRepo);
 
         MenuPrincipal view = new MenuPrincipal(service);
