@@ -85,7 +85,7 @@ public class EstoqueService implements iEstoqueService{
 
         //4. Manda o repositorio salvar (persistência)
         this.movimentoRepository.salvar(entrada);
-        this.produtoRepository.salvar(produto);   
+        this.produtoRepository.atualizarTodos(this.produtos); 
     }
 
     @Override
@@ -103,8 +103,8 @@ public class EstoqueService implements iEstoqueService{
         this.movimentos.add(saida);
 
         // 5. Manda o repositório salvar (persistência)
-        this.produtoRepository.salvar(produto);
         this.movimentoRepository.salvar(saida);
+        this.produtoRepository.atualizarTodos(this.produtos);
     }
 
     @Override

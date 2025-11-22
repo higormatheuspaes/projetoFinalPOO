@@ -63,13 +63,30 @@ public class MenuPrincipal extends JFrame {
         btnCadastroProduto.addActionListener(e -> cardLayout.show(painelPrincipal, "cadastroProduto"));
         btnRegistrarEntrada.addActionListener(e -> cardLayout.show(painelPrincipal, "entrada"));
         btnRegistrarSaida.addActionListener(e -> cardLayout.show(painelPrincipal, "saida"));
-        btnListarProdutos.addActionListener(e -> cardLayout.show(painelPrincipal, "produtos"));
-        btnListarEntradas.addActionListener(e -> cardLayout.show(painelPrincipal, "entradas"));
-        btnListarSaidas.addActionListener(e -> cardLayout.show(painelPrincipal, "saidas"));
-        btnMovimentacoes.addActionListener(e -> cardLayout.show(painelPrincipal, "movimentos"));
+
+            btnListarProdutos.addActionListener(e -> {
+            painelPrincipal.add(new ListarProdutos(service), "produtos");
+            cardLayout.show(painelPrincipal, "produtos");
+        });
+
+            btnListarEntradas.addActionListener(e -> {
+            painelPrincipal.add(new ListarEntradas(service), "entradas");
+            cardLayout.show(painelPrincipal, "entradas");
+        });
+
+            btnListarSaidas.addActionListener(e -> {
+            painelPrincipal.add(new ListarSaidas(service), "saidas");
+            cardLayout.show(painelPrincipal, "saidas");
+        });
+
+            btnMovimentacoes.addActionListener(e -> {
+            painelPrincipal.add(new ListarMovimentacoes(service), "movimentos");
+            cardLayout.show(painelPrincipal, "movimentos");
+        });
+
         btnSaldoProduto.addActionListener(e -> cardLayout.show(painelPrincipal, "saldoProduto"));
         btnSaldoPeriodo.addActionListener(e -> cardLayout.show(painelPrincipal, "saldoPeriodo"));
-
+    
     }
 
 }

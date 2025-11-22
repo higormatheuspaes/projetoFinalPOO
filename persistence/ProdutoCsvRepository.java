@@ -1,30 +1,29 @@
-package repository;
+package persistence;
 
-import model.Produto;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ProdutoRepository implements iProdutoRepository {
-     private List<Produto> produtos = new ArrayList<>();
+import model.Produto;
+import repository.iProdutoRepository;
 
-    @Override
-    public void salvar(Produto produto) {
-        // Se já existe, remove e adiciona de novo (simples persistência em memória)
-        produtos.removeIf(p -> p.getCodigo().equalsIgnoreCase(produto.getCodigo()));
-        produtos.add(produto);
-    }
+public class ProdutoCsvRepository implements iProdutoRepository{
 
     @Override
     public Optional<Produto> buscarPorCodigo(String codigo) {
-        return produtos.stream()
-                .filter(p -> p.getCodigo().equalsIgnoreCase(codigo))
-                .findFirst();
+        // TODO Auto-generated method stub
+        return Optional.empty();
     }
 
     @Override
     public List<Produto> listarTodos() {
-        return new ArrayList<>(produtos);
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void salvar(Produto produto) {
+        // TODO Auto-generated method stub
+        
     }
 
     @Override
@@ -44,4 +43,6 @@ public class ProdutoRepository implements iProdutoRepository {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'remover'");
     }
+
+    
 }

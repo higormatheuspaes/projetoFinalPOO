@@ -19,4 +19,10 @@ public interface iProdutoRepository {
 
     //Lista todos os produtos
     List<Produto> listarTodos();
+
+    void atualizar (Produto produto);
+
+    void atualizarTodos(List<Produto> produtos);
+
+    void remover(String codigo);
 }
