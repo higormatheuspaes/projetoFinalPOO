@@ -10,19 +10,29 @@ import model.*;
 import repository.iMovimentoRepository;
 import repository.iProdutoRepository;
 
+/**
+ * Repositório para armazenar e recuperar movimentos de estoque (entrada e saída) de um arquivo CSV.
+ * Implementa a interface {@link iMovimentoRepository}.
+ * Os movimentos são persistidos no arquivo "movimentos.csv", localizado na pasta "data".
+ */
 public class MovimentoCsvRepository implements iMovimentoRepository {
 
     private static final String NOME_ARQUIVO = "movimentos.csv";
     private File arquivoCsv;
     private final iProdutoRepository produtoRepository;
 
-    
+    /**
+     * Construtor que inicializa o repositório de movimentos.
+     *
+     * @param produtoRepository O repositório de produtos, usado para buscar produtos pelo código.
+     */
     public MovimentoCsvRepository(iProdutoRepository produtoRepository) {
         this.produtoRepository = produtoRepository;
 
         try {
             String diretorioBase = System.getProperty("user.dir");
-            
+
+            // Cria a pasta 'data' caso não exista
             File pasta = new File(diretorioBase, "data");
             if (!pasta.exists()) {
                 boolean criou = pasta.mkdir();
@@ -38,6 +48,11 @@ public class MovimentoCsvRepository implements iMovimentoRepository {
         }
     }
 
+    /**
+     * Lista todos os movimentos registrados no arquivo CSV.
+     *
+     * @return Uma lista de objetos {@link Movimento} (entradas e saídas).
+     */
     @Override
     public List<Movimento> listarTodos() {
         List<Movimento> lista = new ArrayList<>();
@@ -45,6 +60,7 @@ public class MovimentoCsvRepository implements iMovimentoRepository {
         try (BufferedReader reader = new BufferedReader(new FileReader(arquivoCsv))) {
             String linha;
 
+            // Lê cada linha do arquivo e processa como um movimento
             while ((linha = reader.readLine()) != null) {
                 if (linha.isBlank()) continue;
 
@@ -58,12 +74,13 @@ public class MovimentoCsvRepository implements iMovimentoRepository {
 
                 // Busca o produto completo usando o repositório de produtos
                 Optional<Produto> produtoOpt = produtoRepository.buscarPorCodigo(codigoProduto);
-                
-                // Se o produto não existe mais (foi deletado), ignoramos este movimento ou tratamos erro
-                if (produtoOpt.isEmpty()) continue; 
-                
+
+                // Se o produto não existe mais, ignora este movimento
+                if (produtoOpt.isEmpty()) continue;
+
                 Produto produto = produtoOpt.get();
 
+                // Verifica o tipo de movimento (entrada ou saída)
                 if ("ENTRADA".equalsIgnoreCase(tipo)) {
                     double valor = 0.0;
                     if (p.length >= 5) {
@@ -74,11 +91,10 @@ public class MovimentoCsvRepository implements iMovimentoRepository {
                 else if ("SAIDA".equalsIgnoreCase(tipo)) {
                     TipoSaida tipoSaida = TipoSaida.Outra; // Valor padrão seguro
                     if (p.length >= 5) {
-                        try { 
-                            // Tenta converter ignorando maiúsculas/minúsculas
-                            tipoSaida = TipoSaida.valueOf(p[4].toUpperCase()); 
+                        try {
+                            tipoSaida = TipoSaida.valueOf(p[4].toUpperCase());
                         } catch (Exception e) {
-                            // Se der erro (ex: nome mudou), mantém OUTRA
+                            // Se der erro, mantém o valor "OUTRA"
                         }
                     }
                     lista.add(new Saida(produto, data, quantidade, tipoSaida));
@@ -92,10 +108,16 @@ public class MovimentoCsvRepository implements iMovimentoRepository {
         return lista;
     }
 
+    /**
+     * Salva um movimento (entrada ou saída) no arquivo CSV.
+     *
+     * @param movimento O movimento a ser salvo, que pode ser uma instância de {@link Entrada} ou {@link Saida}.
+     */
     @Override
     public void salvar(Movimento movimento) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoCsv, true))) { // append = true
 
+            // Escreve o movimento de entrada
             if (movimento instanceof Entrada entrada) {
                 writer.write(String.join(";",
                         "ENTRADA",
@@ -105,6 +127,7 @@ public class MovimentoCsvRepository implements iMovimentoRepository {
                         String.valueOf(entrada.getValorUnitarioEntrada())
                 ));
             }
+            // Escreve o movimento de saída
             else if (movimento instanceof Saida saida) {
                 writer.write(String.join(";",
                         "SAIDA",
